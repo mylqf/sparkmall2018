@@ -1,5 +1,7 @@
 package JUC;
 
+import java.util.ArrayList;
+
 public class SaleTicketDemo01  {
 
 
@@ -18,6 +20,7 @@ public class SaleTicketDemo01  {
 
 
 class Saler extends Thread{
+    //ArrayList
 
     int ticketNum=30;
 
