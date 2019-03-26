@@ -1,3 +1,4 @@
+import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
 object  Practice {
@@ -31,7 +32,7 @@ object  Practice {
 
     }
     //groupByKey
-    val provinceGroup = provinceToAdSum.groupByKey()
+    val provinceGroup: RDD[(String, Iterable[(String, Int)])] = provinceToAdSum.groupByKey()
     provinceGroup.mapValues{x=>x.toList.sortWith((x,y)=>x._2>y._2)}
 
 

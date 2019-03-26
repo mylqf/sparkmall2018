@@ -1,13 +1,12 @@
 import java.sql.{Connection, DriverManager, PreparedStatement}
 import java.util.UUID
-
 import com.lqf.sparkmall2018.common.model.{CategoryTop10, UserVisitAction}
 import com.lqf.sparkmall2018.common.util.{ConfigUtil, SparkmallUtils}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.util.AccumulatorV2
-
 import scala.collection.mutable
+import scala.collection.mutable.HashMap
 
 /**
   * 得到 点击（）点单  支付 品类top10
@@ -78,15 +77,14 @@ object Req1CategoryTop10Application {
     // (category_click, sumClick)(category_order, sumOrder)(category_pay, sumPay)
     val categorySumMap = categoryCountAccumulator.value
     //4.2.2 将聚合的数据融合在一起（category, (sumClick, sumOrder, sumPay)）
-    val statMap = categorySumMap.groupBy {
+    val statMap: Map[String, HashMap[String, Long]] = categorySumMap.groupBy {
       case (k, v) => {
         k.split("_")(0)
       }
     }
-
     val taskId = UUID.randomUUID().toString
-    //不封装成类可以吗？？？？？
-    val listData = statMap.map {
+    //不封装成类可以吗？？？？？    这个是不是分别前10吧？？
+    val listData: List[CategoryTop10] = statMap.map {
       case (categoryId, map) => {
         CategoryTop10(
           taskId,
@@ -101,7 +99,11 @@ object Req1CategoryTop10Application {
 
     }.toList
 
-    //4.2.3 将聚合的数据根据要求进行倒序排列，取前10条
+    //***********联系 scala的集合操作 与 sparkRDD的异同************************
+
+    
+
+    //4.2.3 将聚合的数据根据要求进行倒序排列，取前10条    1,
     val top10Data = listData.sortWith((x, y) => {
 
       if (x.clickCount < y.clickCount) {
