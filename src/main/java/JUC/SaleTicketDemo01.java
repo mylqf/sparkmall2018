@@ -14,19 +14,21 @@ public class SaleTicketDemo01  {
 //        new Saler().start();
 
         new Thread(()->{
-            while (ticketNum>=1) {
-            ticketNum -= 1;
-            System.out.println(Thread.currentThread().getName()+" "+"还剩" + ticketNum + "张票");
-
-        }}, "a");
-
-        new Thread(()->{
-            while (ticketNum>=1) {
+            while (ticketNum>1) {
                 ticketNum -= 1;
                 System.out.println(Thread.currentThread().getName()+" "+"还剩" + ticketNum + "张票");
 
-            }}, "b");
+        }}, "a").start();
+
+        new Thread(()->{
+            while (ticketNum>1) {
+                ticketNum -= 1;
+                System.out.println(Thread.currentThread().getName()+" "+"还剩" + ticketNum + "张票");
+
+            }}, "b").start();
     }
+
+
 
 }
 
@@ -47,4 +49,6 @@ class Saler extends Thread{
 //
 //        }
 //    }
+
+
 }

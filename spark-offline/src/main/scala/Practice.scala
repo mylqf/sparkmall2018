@@ -1,6 +1,6 @@
 import org.apache.spark.{SparkConf, SparkContext}
 
-object Practice {
+object  Practice {
 
   def main(args: Array[String]): Unit = {
 
@@ -22,7 +22,7 @@ object Practice {
     val provinceAdToSum = provinceAdAndOne.reduceByKey(_ + _)
 
 
-    //provinceAdToSum.map(x=>x._1._1)
+    //provinceAdToSum.map(x=>x._1._1) (province,(ad,sum))
     val provinceToAdSum=provinceAdToSum.map{
 
       case (x,y)=>{
@@ -30,6 +30,7 @@ object Practice {
       }
 
     }
+    //groupByKey
     val provinceGroup = provinceToAdSum.groupByKey()
     provinceGroup.mapValues{x=>x.toList.sortWith((x,y)=>x._2>y._2)}
 

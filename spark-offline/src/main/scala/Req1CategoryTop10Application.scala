@@ -85,6 +85,7 @@ object Req1CategoryTop10Application {
     }
 
     val taskId = UUID.randomUUID().toString
+    //不封装成类可以吗？？？？？
     val listData = statMap.map {
       case (categoryId, map) => {
         CategoryTop10(
